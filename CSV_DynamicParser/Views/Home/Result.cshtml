@@ -1,0 +1,83 @@
+﻿@using CSV_DynamicParser.ViewModels;
+@{
+    ViewData["Title"] = "Result Page";
+}
+@model IndexViewModel;
+<div class="row">
+    <h2 style="text-align: center;">CSV Dynamic Parser</h2>
+</div>
+    <div class="row">
+        <div class="col-lg-3 col-md-3 col-sm-1 col-xs-1"></div>
+        <div class="col-lg-6 col-md-6 col-sm-10 col-xs-10" style="padding-top: 2rem; padding-bottom: 2rem; border: 2px solid #505050;">           
+            <div class="row" style="margin-bottom: 1.0rem;">
+                <div class="col-md-6" style="padding-left: 6rem;">
+                    <h4>Input File</h4>
+                </div>
+                <div class="col-md-4">
+                    <h4>Mapping</h4>
+                </div>
+                <div class="col-md-2">
+                    <a href="/"><h4>back</h4></a>
+                </div>
+            </div>
+            @foreach (var item in Model.MappedItems)
+            {
+                var cssStyle = string.Concat("item-bottom-style", item.IsSkip == true ? " item-skip" : "");
+                <div class="row" style="padding-left: 1.5rem; padding-right: 1.5rem; padding-top: 0.4rem;">
+                    <div class="col-md-1 @cssStyle">
+                        @item.Order
+                    </div>
+                    <div class="col-md-5 @cssStyle">
+                        @item.CsvFileHeader
+                    </div>
+                    <div class="col-md-6 @cssStyle">
+                        @item.MappedField
+                    </div>
+                </div>
+            }
+            <div id="divResult" class="row" style="padding-left: 2rem; padding-right: 2rem; border-top-width: 2px; border-top-color: #505050;border-top-style: solid;" >
+                <table class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <thead>
+                        <tr style="border-bottom-width: 1px; border-bottom-color: #505050; border-bottom-style: solid;">
+                            @foreach (var col in Model.MappedItems)
+                            {
+                                if (col.IsSkip == true)
+                                {
+                                    continue;
+                                }
+                                else
+                                {
+                                    <th style="text-align: center">@col.MappedField</th>
+                                }
+                            }
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach(var ds in Model.DataSet)
+                        {
+                            var columnIndex = 0;
+                            <tr style="min-height: 10rem;">
+                                @foreach(var col in Model.MappedItems)
+                                {
+                                    if(col.IsSkip == true)
+                                    {                                    
+                                        columnIndex++;
+                                        continue;
+                                    }
+                                    else
+                                    {
+                                        <td style="padding-left: 1.5rem;">@ds[columnIndex]</td>                                    
+                                        columnIndex++;
+                                    }
+                                }
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <div class="row" style="padding-top: 1.5rem; margin-top: 0.5rem; border-top-width: 2px; border-top-color: #505050;border-top-style: solid;">
+                <h4><a href="/" style="margin-left: 3.3rem;">back</a></h4>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-3 col-sm-1 col-xs-1"></div>
+    </div>

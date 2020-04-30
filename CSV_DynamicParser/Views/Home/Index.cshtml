@@ -1,0 +1,71 @@
+﻿@using CSV_DynamicParser.ViewModels;
+@{
+    ViewData["Title"] = "Home Page";
+}
+@model IndexViewModel;
+<div class="row">
+    <h2 style="text-align: center;">CSV Dynamic Parser</h2>
+</div>
+@using (Html.BeginForm("Index", "Home", new { }, FormMethod.Post))
+{
+<div class="row">
+    <div class="col-lg-2 col-md-1 col-sm-1 col-xs-1"></div>
+    <div class="col-lg-8 col-md-10 col-sm-10 col-xs-10" style="padding-top: 2rem; padding-bottom: 2rem; border: 2px solid #505050;">
+        <div class="row">
+            <div class="col-lg-8 col-md-8 col-sm-8 col-xs-6">
+                @Html.HiddenFor(m => m.FileHeaderCount)
+                @Html.HiddenFor(m => m.CsvFile)
+                <input id="fileInput_CSV" type="file" />
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-4 cols-xs-6">
+                <input id="btnInput_Upload" type="button" value="Upload" onclick="startRead();" />
+            </div>
+        </div>
+        <div class="row" style="margin-bottom: 0.4rem;margin-top: 1rem; border-bottom-width: 2px; border-bottom-color: #505050; border-bottom-style: solid;">
+            <div style="padding-left: 3rem; min-height: 2.7rem;">
+                @Html.CheckBoxFor(m => m.FileHasHeaders, new { @id = "ckInput_FileHasHeaders" })
+                <span style="padding-left: 0.05rem;">File has headers</span>
+            </div>
+        </div>
+        <div class="row" style="margin-bottom: 3rem;">
+            <div class="col-lg-5 col-md-6 col-sm-4 col-xs-4" >
+                <h4>Input File</h4>
+            </div>
+            <div class="col-lg-5 col-md-6 col-sm-4 col-xs-4">
+                <h4>Mapping</h4>
+            </div>
+        </div>
+        <div class="row">
+            <div id="divMappedTable" class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                @{
+                    var itemIndex = 0;
+                    @foreach (var item in Model.MappedItems)
+                    {
+                        <div class="row" style="padding-left: 1.5rem; padding-right: 1.5rem; padding-top: 0.4rem;">
+                            <div class="col-lg-2 col-md-2 col-sm-3 col-xs-2 item-bottom-style">
+                                @item.Order
+                                @Html.HiddenFor(m => m.MappedItems[itemIndex].Order)
+                            </div>
+                            <div class="col-lg-4 col-md-5 col-sm-4 col-xs-5 item-bottom-style">
+                                @item.CsvFileHeader
+                                @Html.HiddenFor(m => m.MappedItems[itemIndex].CsvFileHeader)
+                            </div>
+                            <div class="col-lg-4 col-md-5 col-sm-5 col-xs-5 item-bottom-style">
+                                @Html.HiddenFor(m => m.MappedItems[itemIndex].IsSkip, item.IsSkip)
+                                @Html.DropDownListFor(m => m.MappedItems[itemIndex].MappedField, Model.MappingFieldList.Select(s => new SelectListItem { Text = s.Name, Value = s.Name }), "", new { style = "min-width: 10rem;", @id = string.Concat("MappedItems_", itemIndex, "__MappedField") })
+                            </div>
+                        </div>
+                        itemIndex++;
+                    }
+                }
+            </div>
+        </div>       
+        <div id="divNextStep" class="row" style="margin-top: 1.5rem; border-top-width: 2px; border-top-color: #505050;border-top-style: solid;">
+            <div style="float: right; padding-top: 1.5rem; padding-right: 7rem;">
+                <input id="btnNextStep" type="submit" value="Next" />
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-2 col-md-1 col-sm-1 col-xs-1"></div>
+</div>
+}

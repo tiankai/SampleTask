@@ -1,0 +1,12 @@
+CSV_DynamicParser/.vs/
+CSV_DynamicParser/bin/
+CSV_DynamicParser/obj/
+CSV_DynamicParser/*.csproj.user
+
+CsvContentHelper/bin/
+CsvContentHelper/obj/
+CsvContentHelper/*.csproj.user
+
+XUnitTestCsvFileInputs/bin/
+XUnitTestCsvFileInputs/obj/
+XUnitTestCsvFileInputs/*.csproj.user
